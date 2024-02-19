@@ -1,0 +1,24 @@
+.tierListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.tierListLabel {
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  padding: 20px;
+  user-select: none;
+}
+
+.tierContainer {
+  display: flex;
+}
+
+.tierContent {
+  background-color: grey;
+  width: 100px;
+}

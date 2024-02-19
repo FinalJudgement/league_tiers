@@ -1,3 +1,5 @@
+import styles from "./TierList.module.css";
+
 const initialState = ["S", "A", "B", "C", "D", "F"]
   .map((tierLetter) => {
     return {
@@ -23,26 +25,19 @@ const TierList = () => {
   return (
     <div>
       <h2>Tiers</h2>
-      <div>
+      <div className={styles.tierListContainer}>
         {Object.entries(initialState).map(([tierLabel, champsInTier]) => {
           return (
-            <article
-              style={{ display: "flex", margin: "2rem" }}
-              key={tierLabel}
-            >
+            <article className={styles.tierContainer} key={tierLabel}>
               <h3
+                className={styles.tierListLabel}
                 style={{
                   backgroundColor: tierColors[tierLabel],
-                  width: "5rem",
-                  display: "flex",
-                  justifyContent: "center",
-                  fontSize: "2rem",
-                  padding: "20px",
                 }}
               >
                 {tierLabel}
               </h3>
-              <section style={{ backgroundColor: "grey", width: "100px" }}>
+              <section className={styles.tierContent}>
                 {champsInTier.map(({ champName, champImgUrl }) => {
                   return <h4 key={champName}>champName</h4>;
                 })}

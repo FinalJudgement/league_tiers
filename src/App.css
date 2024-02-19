@@ -8,3 +8,8 @@ html {
   background-color: rgb(23, 23, 23);
   color: rgb(230, 230, 230);
 }
+
+body {
+  width: 70%;
+  margin: 0 auto;
+}
