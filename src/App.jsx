@@ -5,7 +5,7 @@ import TierList from "./components/TierList";
 function App() {
   return (
     <>
-      <h1>Bad Boys Tier List</h1>
+      <h1>Bad Boys Tier Maker</h1>
       <TierList />
       <ChampPool />
     </>
