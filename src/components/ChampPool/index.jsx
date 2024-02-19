@@ -20,9 +20,12 @@ const ChampPool = () => {
     if (searchText.trim() === "") {
       setFilteredChampPool(originalChampPool);
     } else {
-      const updatedPool = originalChampPool.filter((obj) =>
-        obj.name.toLowerCase().includes(searchText.toLowerCase())
-      );
+      const updatedPool = originalChampPool.filter((obj) => {
+        return obj.name
+          .slice(0, searchText.length)
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+      });
       setFilteredChampPool(updatedPool);
     }
   };
