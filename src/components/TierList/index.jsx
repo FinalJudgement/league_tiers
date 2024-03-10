@@ -1,6 +1,7 @@
+import { useDroppable } from "@dnd-kit/core";
 import styles from "./TierList.module.css";
 
-const initialState = ["S", "A", "B", "C", "D", "F"]
+export const initialState = ["S", "A", "B", "C", "D", "F"]
   .map((tierLetter) => {
     return {
       label: tierLetter,
@@ -20,33 +21,55 @@ const tierColors = {
   F: "pink",
 };
 
-console.log("Object.entries:", Object.entries(initialState));
-const TierList = () => {
+const TierList = ({ tierListState }) => {
   return (
     <div>
       <h2>Tiers</h2>
       <div className={styles.tierListContainer}>
-        {Object.entries(initialState).map(([tierLabel, champsInTier]) => {
+        {Object.entries(tierListState).map(([tierLabel, champsInTier]) => {
           return (
-            <article className={styles.tierContainer} key={tierLabel}>
-              <h3
-                className={styles.tierListLabel}
-                style={{
-                  backgroundColor: tierColors[tierLabel],
-                }}
-              >
-                {tierLabel}
-              </h3>
-              <section className={styles.tierContent}>
-                {champsInTier.map(({ champName, champImgUrl }) => {
-                  return <h4 key={champName}>champName</h4>;
-                })}
-              </section>
-            </article>
+            <DroppableTier
+              key={tierLabel}
+              tierLabel={tierLabel}
+              champsInTier={champsInTier}
+            />
           );
         })}
       </div>
     </div>
+  );
+};
+
+const DroppableTier = ({ tierLabel, champsInTier }) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id: tierLabel,
+    data: { tierLabel },
+  });
+
+  const style = {
+    color: isOver ? "green" : undefined,
+  };
+  return (
+    <article
+      className={styles.tierContainer}
+      // key={tierLabel}
+      ref={setNodeRef}
+      style={style}
+    >
+      <h3
+        className={styles.tierListLabel}
+        style={{
+          backgroundColor: tierColors[tierLabel],
+        }}
+      >
+        {tierLabel}
+      </h3>
+      <section className={styles.tierContent}>
+        {champsInTier.map((championId) => {
+          return <p key={championId}>{championId}</p>;
+        })}
+      </section>
+    </article>
   );
 };
 
