@@ -1,29 +1,30 @@
 import { DndContext } from "@dnd-kit/core";
 import "./App.css";
 import ChampPool from "./components/ChampPool";
-import TierList, { initialState } from "./components/TierList";
-import { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
+
+import TierList from "./components/TierList";
 
 function App() {
-  const [tierListState, setTierListState] = useState(initialState);
-
+  const { appState, setAppState } = useContext(AppContext);
   function handleDragEnd(event) {
-    const draggedChampionId = event.active.data.current.id;
-    const droppedTier = event.over.data.current.tierLabel;
-    setTierListState((prevState) => {
-      const currentTierState = prevState[droppedTier];
-      return {
-        ...prevState,
-        [droppedTier]: [...currentTierState, draggedChampionId],
-      };
+    const activeChamp = event.active.data.current.id;
+    const activeTier = event.over.data.current.tierLabel;
+
+    setAppState((prevState) => {
+      const newState = { ...prevState };
+      newState.tierLists[activeTier].add(activeChamp);
+      newState.championPool.delete(activeChamp);
+      return newState;
     });
   }
   return (
     <>
       <h1>Bad Boys Tier List</h1>
       <DndContext onDragEnd={handleDragEnd}>
-        <TierList tierListState={tierListState} />
-        <ChampPool />
+        <TierList tierListState={appState.tierLists} />
+        <ChampPool champPoolState={appState.championPool} />
       </DndContext>
     </>
   );

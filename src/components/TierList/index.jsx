@@ -1,5 +1,8 @@
 import { useDroppable } from "@dnd-kit/core";
 import styles from "./TierList.module.css";
+import { BASE_URL, CHAMP_DATA } from "../../data/constants";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
 export const initialState = ["S", "A", "B", "C", "D", "F"]
   .map((tierLetter) => {
@@ -26,12 +29,12 @@ const TierList = ({ tierListState }) => {
     <div>
       <h2>Tiers</h2>
       <div className={styles.tierListContainer}>
-        {Object.entries(tierListState).map(([tierLabel, champsInTier]) => {
+        {Object.entries(tierListState).map(([tierLabel, champsInTierSet]) => {
           return (
             <DroppableTier
               key={tierLabel}
               tierLabel={tierLabel}
-              champsInTier={champsInTier}
+              champsInTierSet={champsInTierSet}
             />
           );
         })}
@@ -40,7 +43,8 @@ const TierList = ({ tierListState }) => {
   );
 };
 
-const DroppableTier = ({ tierLabel, champsInTier }) => {
+const DroppableTier = ({ tierLabel, champsInTierSet }) => {
+  const { setAppState } = useContext(AppContext);
   const { isOver, setNodeRef } = useDroppable({
     id: tierLabel,
     data: { tierLabel },
@@ -65,8 +69,26 @@ const DroppableTier = ({ tierLabel, champsInTier }) => {
         {tierLabel}
       </h3>
       <section className={styles.tierContent}>
-        {champsInTier.map((championId) => {
-          return <p key={championId}>{championId}</p>;
+        {[...champsInTierSet].map((championId) => {
+          const championObj = CHAMP_DATA[championId];
+          return (
+            <div
+              key={championId}
+              onClick={() => {
+                setAppState((prevState) => {
+                  const newState = { ...prevState };
+                  newState.championPool.add(championId);
+                  newState.tierLists[tierLabel].delete(championId);
+                  return newState;
+                });
+              }}
+            >
+              <img
+                src={`${BASE_URL}${championObj.image.full}`}
+                alt={championObj.name}
+              />
+            </div>
+          );
         })}
       </section>
     </article>

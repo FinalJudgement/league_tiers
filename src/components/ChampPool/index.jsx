@@ -1,23 +1,28 @@
 import { useDraggable } from "@dnd-kit/core";
-import champions from "../../data/champion.json";
 import styles from "./ChampPool.module.css";
+import { BASE_URL, CHAMP_DATA } from "../../data/constants";
 
-const BASE_URL = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/";
-
-const ChampPool = () => {
+const ChampPool = ({ champPoolState }) => {
   return (
     <div>
       <h2>Champions</h2>
       <div className={styles.championsContainer}>
-        {Object.entries(champions.data).map(([championId, championObj]) => {
-          return (
-            <DraggableChamp
-              key={championId}
-              championId={championId}
-              championObj={championObj}
-            />
-          );
-        })}
+        {[...champPoolState]
+          .sort((a, b) => {
+            if (a > b) {
+              return 1;
+            }
+            return -1;
+          })
+          .map((championId) => {
+            return (
+              <DraggableChamp
+                key={championId}
+                championId={championId}
+                championObj={CHAMP_DATA[championId]}
+              />
+            );
+          })}
       </div>
     </div>
   );
