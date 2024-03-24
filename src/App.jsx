@@ -17,6 +17,8 @@ function App() {
         [droppedTier]: [...currentTierState, draggedChampionId],
       };
     });
+
+    console.log(event);
   }
   return (
     <>

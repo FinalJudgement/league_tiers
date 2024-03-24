@@ -1,15 +1,17 @@
 import { useDraggable } from "@dnd-kit/core";
 import champions from "../../data/champion.json";
 import styles from "./ChampPool.module.css";
+import { useState } from "react";
 
 const BASE_URL = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/";
 
 const ChampPool = () => {
+  const [champPool, setChampPool] = useState(champions.data);
   return (
     <div>
       <h2>Champions</h2>
       <div className={styles.championsContainer}>
-        {Object.entries(champions.data).map(([championId, championObj]) => {
+        {Object.entries(champPool).map(([championId, championObj]) => {
           return (
             <DraggableChamp
               key={championId}
