@@ -56,12 +56,7 @@ const DroppableTier = ({ tierLabel, champsInTierSet }) => {
     color: isOver ? "green" : undefined,
   };
   return (
-    <article
-      className={styles.tierContainer}
-      // key={tierLabel}
-      ref={setNodeRef}
-      style={style}
-    >
+    <article className={styles.tierContainer} ref={setNodeRef} style={style}>
       <h3
         className={styles.tierListLabel}
         style={{
