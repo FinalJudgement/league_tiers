@@ -11,14 +11,33 @@ function App() {
   function handleDragEnd(event) {
     const activeChamp = event.active.data.current.id;
     const activeTier = event.over.data.current.tierLabel;
-
+    let deleteChamp = false;
     setAppState((prevState) => {
       const newState = { ...prevState };
-      newState.tierLists[activeTier].add(activeChamp);
-      newState.championPool.delete(activeChamp);
+      console.log()
+      Object.entries(newState.tierLists).forEach((key) => {
+        if(key[1].has(activeChamp)){
+          if(newState.tierLists[activeTier] === key[1]){
+            deleteChamp = true;
+            newState.championPool.add(activeChamp)
+          } else{
+            deleteChamp = false;
+          }
+          key[1].delete(activeChamp);
+        }
+      })
+
+      if(deleteChamp){
+
+      } else {
+        newState.tierLists[activeTier].add(activeChamp);
+        newState.championPool.delete(activeChamp);
+      }
+      
       return newState;
     });
   }
+
   return (
     <>
       <h1>Bad Boys Tier List</h1>

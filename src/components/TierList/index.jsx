@@ -1,4 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
+import { useDraggable } from "@dnd-kit/core";
+
 import styles from "./TierList.module.css";
 import { BASE_URL, CHAMP_DATA } from "../../data/constants";
 import { useContext } from "react";
@@ -83,15 +85,38 @@ const DroppableTier = ({ tierLabel, champsInTierSet }) => {
                 });
               }}
             >
-              <img
-                src={`${BASE_URL}${championObj.image.full}`}
-                alt={championObj.name}
+              <DraggableChamp
+                key={championId}
+                championId={championId}
+                championObj={CHAMP_DATA[championId]}
               />
             </div>
           );
         })}
       </section>
     </article>
+  );
+};
+
+const DraggableChamp = ({ championId, championObj }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: championId,
+    data: championObj,
+  });
+
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
+
+  return (
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      <img
+        src={`${BASE_URL}${championObj.image.full}`}
+        alt={championObj.name}
+      />
+    </div>
   );
 };
 
