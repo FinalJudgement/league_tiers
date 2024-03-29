@@ -11,7 +11,6 @@ function App() {
 
   function handleDragEnd(event) {
     const activeChamp = event.active.data.current.id;
-    console.log(event);
     if (event.over !== null) {
       const activeTier = event.over.data.current.tierLabel;
       setAppState((prevState) => {
