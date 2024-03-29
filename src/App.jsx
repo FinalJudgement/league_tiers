@@ -8,34 +8,40 @@ import TierList from "./components/TierList";
 
 function App() {
   const { appState, setAppState } = useContext(AppContext);
+
   function handleDragEnd(event) {
     const activeChamp = event.active.data.current.id;
-    const activeTier = event.over.data.current.tierLabel;
-    let deleteChamp = false;
-    setAppState((prevState) => {
-      const newState = { ...prevState };
-      console.log()
-      Object.entries(newState.tierLists).forEach((key) => {
-        if(key[1].has(activeChamp)){
-          if(newState.tierLists[activeTier] === key[1]){
-            deleteChamp = true;
-            newState.championPool.add(activeChamp)
-          } else{
-            deleteChamp = false;
+    console.log(event);
+    if (event.over !== null) {
+      const activeTier = event.over.data.current.tierLabel;
+      setAppState((prevState) => {
+        const newState = { ...prevState };
+
+        Object.entries(newState.tierLists).forEach((key) => {
+          if (key[1].has(activeChamp)) {
+            key[1].delete(activeChamp);
           }
-          key[1].delete(activeChamp);
-        }
-      })
+        });
 
-      if(deleteChamp){
-
-      } else {
         newState.tierLists[activeTier].add(activeChamp);
         newState.championPool.delete(activeChamp);
-      }
-      
-      return newState;
-    });
+        return newState;
+      });
+    } else {
+      setAppState((prevState) => {
+        const newState = { ...prevState };
+
+        Object.entries(newState.tierLists).forEach((key) => {
+          if (key[1].has(activeChamp)) {
+            key[1].delete(activeChamp);
+          }
+        });
+
+        newState.championPool.add(activeChamp);
+
+        return newState;
+      });
+    }
   }
 
   return (
