@@ -88,7 +88,7 @@ const DroppableTier = ({ tierLabel, champsInTierSet }) => {
               <DraggableChamp
                 key={championId}
                 championId={championId}
-                championObj={CHAMP_DATA[championId]}
+                championObj={championObj}
               />
             </div>
           );
